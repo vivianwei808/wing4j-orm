@@ -114,6 +114,10 @@ public class DefaultMarkdownMapperParser implements MarkdownMapperParser {
                                 e.printStackTrace();
                             }
                         }
+                        if ("resultMapping".equals(paramValue.getName())) {
+                                //TODO 构建映射列表
+                                runtimeCtx.getResultMappings();
+                        }
                     }
                 }
                 if (codeBlock.getLanguage() == CodeLanguage.SQL) {

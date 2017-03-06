@@ -1,24 +1,25 @@
-ÕâÊÇÒ»¸ömarkdownÎÄ¼şµÄÑİÊ¾Àı×Ó
+è¿™æ˜¯ä¸€ä¸ªmarkdownæ–‡ä»¶çš„æ¼”ç¤ºä¾‹å­
 ```wing4j configure
---·½ÑÔÉèÖÃ
+--æ–¹è¨€è®¾ç½®
 --@dialect=mySQL
---ÃüÃû¿Õ¼ä
+--å‘½åç©ºé—´
 --@namespace=org.wing4j.orm
 ```
-#[²éÑ¯ÓÃ»§ĞÅÏ¢](selectDemo)#
+#[æŸ¥è¯¢ç”¨æˆ·ä¿¡æ¯](selectDemo)#
 
-ÕâÊÇÒ»¸ömarkdownÎÄ¼şµÄÑİÊ¾Àı×Ó
+è¿™æ˜¯ä¸€ä¸ªmarkdownæ–‡ä»¶çš„æ¼”ç¤ºä¾‹å­
 ```wing4j param
---Ç¿ÖÆË¢ĞÂ»º´æ
+--å¼ºåˆ¶åˆ·æ–°ç¼“å­˜
 --@flushCacheRequired=true
---Ê¹ÓÃ»º´æ¹Ø±Õ
+--ä½¿ç”¨ç¼“å­˜å…³é—­
 --@useCache=false
---»ñÈ¡¼ÇÂ¼´óĞ¡
+--è·å–è®°å½•å¤§å°
 --@fetchSize=1
---³¬Ê±Ê±¼ä
+--è¶…æ—¶æ—¶é—´
 --@timeout=1000
---@paramEntity=org.wing4j.orm.markdown.ParamEntity//²ÎÊıÊµÌå
---@resultEntity=org.wing4j.orm.markdown.ResultEntity//½á¹ûÊµÌå
+--@paramEntity=org.wing4j.orm.markdown.ParamEntity//å‚æ•°å®ä½“
+--@resultEntity=org.wing4j.orm.markdown.ResultEntity//ç»“æœå®ä½“
+--@resultMapping={SERIAL_NO:serialNo,NAME_1:name1,AGE:age2,SEX,sex3}
 ```
 ```sql
 select * 
@@ -32,20 +33,22 @@ and col3=#{col2:NUMBER}
 /*#     fi                               */
 ```
 
-[ĞÂÔöÊı¾İ](insert)
+
+[æ–°å¢æ•°æ®](insert)
 ================================
 ```wing4j param
---@paramEntity=org.wing4j.orm.markdown.ParamEntity//²ÎÊıÊµÌå
+--@paramEntity=org.wing4j.orm.markdown.ParamEntity//å‚æ•°å®ä½“
 ```
 ```sql
 insert into table1(col1, col2, col3)
 values('col1', 'col2', 3)
 ```
 
-[¸ù¾İÓÃ»§ID¸üĞÂÊı¾İ](updateById)
+
+[æ ¹æ®ç”¨æˆ·IDæ›´æ–°æ•°æ®](updateById)
 ================================
 ```wing4j param
---@paramEntity=org.wing4j.orm.markdown.ParamEntity//²ÎÊıÊµÌå
+--@paramEntity=org.wing4j.orm.markdown.ParamEntity//å‚æ•°å®ä½“
 ```
 ```sql
 update table t
@@ -60,10 +63,10 @@ and col3=#{col3:NUMBER}
 ```
 
 
-[¸ù¾İÓÃ»§IDÉ¾³ıÊı¾İ](deleteById)
+[æ ¹æ®ç”¨æˆ·IDåˆ é™¤æ•°æ®](deleteById)
 ================================
 ```wing4j param
---@paramEntity=org.wing4j.orm.markdown.ParamEntity//²ÎÊıÊµÌå
+--@paramEntity=org.wing4j.orm.markdown.ParamEntity//å‚æ•°å®ä½“
 ```
 ```sql
 delete from table t

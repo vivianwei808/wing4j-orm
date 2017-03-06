@@ -1,10 +1,14 @@
 package org.wing4j.orm.mybatis.markdown.wing4j.utils;
 
+import lombok.extern.slf4j.Slf4j;
+import org.wing4j.common.utils.MessageFormatter;
+
 import static org.wing4j.orm.mybatis.markdown.wing4j.MarkdownMapperConstants.*;
 
 /**
  * Created by wing4j on 2017/1/30.
  */
+@Slf4j
 public class Wing4jParamUtils {
     /**
      * 参数值对象
@@ -51,20 +55,26 @@ public class Wing4jParamUtils {
      * @return 参数对象
      */
     public static ParamValue trimParam(String line) {
-        String temp = line.substring(PARAM_PREFIX.length());
-        int commentIdx = temp.indexOf(LINE_COMMENT);
-        if(commentIdx > -1){
-            temp = temp.substring(0, commentIdx);
+        try{
+            String temp = line.substring(PARAM_PREFIX.length());
+            int commentIdx = temp.indexOf(LINE_COMMENT);
+            if(commentIdx > -1){
+                temp = temp.substring(0, commentIdx);
+            }
+            int idx1 = temp.indexOf("=");
+            int idx2 = temp.lastIndexOf("=");
+            if (idx1 != idx2) {
+                //TODO 处理不一致的问题
+            }
+            String name = temp.substring(0, idx1).trim();
+            String value = temp.substring(idx2 + 1).trim();
+            ParamValue paramValue = new ParamValue(name, value);
+            return paramValue;
+        }catch (Exception e){
+            System.out.println(MessageFormatter.format("process md script '{}' happens error!", line));
+            log.info("process md script '{}' happens error!", line);
+            throw e;
         }
-        int idx1 = temp.indexOf("=");
-        int idx2 = temp.lastIndexOf("=");
-        if (idx1 != idx2) {
-            //TODO 处理不一致的问题
-        }
-        String name = temp.substring(0, idx1).trim();
-        String value = temp.substring(idx2 + 1).trim();
-        ParamValue paramValue = new ParamValue(name, value);
-        return paramValue;
     }
 
     /**
