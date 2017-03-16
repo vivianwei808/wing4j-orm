@@ -30,6 +30,10 @@
             <artifactId>wing4j-common-markdown</artifactId>
             <version>1.0.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.wing4j.common</groupId>
+            <artifactId>wing4j-common-utils</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 </project>
