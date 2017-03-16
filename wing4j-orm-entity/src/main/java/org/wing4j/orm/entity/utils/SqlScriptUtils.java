@@ -10,6 +10,7 @@ import org.wing4j.orm.entity.metadata.TableMetadata;
 import org.wing4j.test.TableNameMode;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -44,31 +45,31 @@ public abstract class SqlScriptUtils {
                                              WordMode keywordMode,
                                              boolean createBeforeTest) {
         TableMetadata tableMetadata = EntityExtracteUtils.extractTable(entityClass, false);
-        if(schemaMode == TableNameMode.auto){
-            if(schema != null){
+        if (schemaMode == TableNameMode.auto) {
+            if (schema != null) {
                 tableMetadata.setSchema(schema);
             }
-        }else if(schemaMode == TableNameMode.entity){
+        } else if (schemaMode == TableNameMode.entity) {
 
-        }else if (schemaMode == TableNameMode.createTest){
+        } else if (schemaMode == TableNameMode.createTest) {
             tableMetadata.setSchema(schema);
         }
-        if(prefixMode == TableNameMode.auto){
-            if(prefix != null){
+        if (prefixMode == TableNameMode.auto) {
+            if (prefix != null) {
                 tableMetadata.setPrefix(prefix);
             }
-        }else if(prefixMode == TableNameMode.entity){
+        } else if (prefixMode == TableNameMode.entity) {
 
-        }else if (prefixMode == TableNameMode.createTest){
+        } else if (prefixMode == TableNameMode.createTest) {
             tableMetadata.setPrefix(prefix);
         }
-        if(suffixMode == TableNameMode.auto){
-            if(suffix != null){
+        if (suffixMode == TableNameMode.auto) {
+            if (suffix != null) {
                 tableMetadata.setSuffix(suffix);
             }
-        }else if(suffixMode == TableNameMode.entity){
+        } else if (suffixMode == TableNameMode.entity) {
 
-        }else if (suffixMode == TableNameMode.createTest){
+        } else if (suffixMode == TableNameMode.createTest) {
             tableMetadata.setSuffix(suffix);
         }
         tableMetadata.setDataEngine(engine);
@@ -189,31 +190,31 @@ public abstract class SqlScriptUtils {
                                            WordMode keywordMode,
                                            boolean dropBeforeTest) {
         TableMetadata tableMetadata = EntityExtracteUtils.extractTable(entityClass, false);
-        if(schemaMode == TableNameMode.auto){
-            if(schema != null){
+        if (schemaMode == TableNameMode.auto) {
+            if (schema != null) {
                 tableMetadata.setSchema(schema);
             }
-        }else if(schemaMode == TableNameMode.entity){
+        } else if (schemaMode == TableNameMode.entity) {
 
-        }else if (schemaMode == TableNameMode.createTest){
+        } else if (schemaMode == TableNameMode.createTest) {
             tableMetadata.setSchema(schema);
         }
-        if(prefixMode == TableNameMode.auto){
-            if(prefix != null){
+        if (prefixMode == TableNameMode.auto) {
+            if (prefix != null) {
                 tableMetadata.setPrefix(prefix);
             }
-        }else if(prefixMode == TableNameMode.entity){
+        } else if (prefixMode == TableNameMode.entity) {
 
-        }else if (prefixMode == TableNameMode.createTest){
+        } else if (prefixMode == TableNameMode.createTest) {
             tableMetadata.setPrefix(prefix);
         }
-        if(suffixMode == TableNameMode.auto){
-            if(suffix != null){
+        if (suffixMode == TableNameMode.auto) {
+            if (suffix != null) {
                 tableMetadata.setSuffix(suffix);
             }
-        }else if(suffixMode == TableNameMode.entity){
+        } else if (suffixMode == TableNameMode.entity) {
 
-        }else if (suffixMode == TableNameMode.createTest){
+        } else if (suffixMode == TableNameMode.createTest) {
             tableMetadata.setSuffix(suffix);
         }
         ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
@@ -256,7 +257,7 @@ public abstract class SqlScriptUtils {
         }
         table = convert(table, sqlMode);
         sql.append(table);
-        os.write(sql.toString().getBytes());
+        os.write(sql.toString().getBytes("UTF-8"));
     }
 
     /**
@@ -285,7 +286,7 @@ public abstract class SqlScriptUtils {
         }
         table = convert(table, sqlMode);
         sql.append(table);
-        os.write(sql.toString().getBytes());
+        os.write(sql.toString().getBytes("UTF-8"));
     }
 
     /**
@@ -338,5 +339,51 @@ public abstract class SqlScriptUtils {
             }
         }
         return builder.toString();
+    }
+
+    /**
+     * 生成默认模式的建表语句
+     *
+     * @param os
+     * @param keywordMode 关键大小写
+     * @param sqlMode     SQL关键大小写
+     * @param entities
+     * @throws IOException
+     */
+    public static void generateSql(ByteArrayOutputStream os,
+                                          WordMode sqlMode,
+                                          WordMode keywordMode,
+                                          Class... entities) throws IOException {
+        for (Class entity : entities) {
+            TableMetadata tableMetadata = EntityExtracteUtils.extractTable(entity, false);
+            generateDropTable(os, tableMetadata, sqlMode, keywordMode, false);
+            os.write("\n".getBytes("UTF-8"));
+            generateCreateTable(os, tableMetadata, sqlMode, keywordMode, false);
+            os.write("\n".getBytes("UTF-8"));
+        }
+    }
+
+    /**
+     * 创建SQL语句
+     * @param keywordMode 关键大小写
+     * @param sqlMode     SQL关键大小写
+     * @param entities
+     * @throws IOException
+     */
+    public static void generateSql(WordMode sqlMode,
+                                   WordMode keywordMode,
+                                   Class... entities) throws IOException {
+        ByteArrayOutputStream os = new ByteArrayOutputStream(1024);
+        for (Class entity : entities) {
+            TableMetadata tableMetadata = EntityExtracteUtils.extractTable(entity, false);
+            generateDropTable(os, tableMetadata, sqlMode, keywordMode, false);
+            os.write("\n".getBytes("UTF-8"));
+            generateCreateTable(os, tableMetadata, sqlMode, keywordMode, false);
+            os.write("\n".getBytes("UTF-8"));
+        }
+        FileOutputStream fos = new FileOutputStream("./target/sqlScript.sql");
+        fos.write(os.toByteArray());
+        fos.flush();
+        fos.close();
     }
 }
